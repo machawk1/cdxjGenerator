@@ -40,8 +40,6 @@ if len(sys.argv) <= 1:
 else:
     lineCount = int(sys.argv[1])
 
-lines = []
-
 lineGenerator = line_generator()
 while lineCount > 0:
     print(lineGenerator.next())
