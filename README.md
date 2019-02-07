@@ -2,7 +2,7 @@
 
 A rudimentary Python 3 script to generate CDXJ TimeMaps for testing elsewhere. 
 
-# Usage
+## Usage
 
 To run:
 
