@@ -42,7 +42,7 @@ else:
 
 lineGenerator = line_generator()
 while lineCount > 0:
-    print(lineGenerator.next())
+    print(next(lineGenerator))
     lineCount -= 1
 
 '''Sample CDXJ TimeMap pulled and generated from github.com/oduwsdl/ipwb
