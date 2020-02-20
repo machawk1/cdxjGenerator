@@ -9,17 +9,26 @@ from tlds import tld_set
 import string
 import random
 import sys
+import datetime
+from faker import Faker
 
 
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
+
+def date_generator():
+    fake = Faker()
+    start_date = datetime.date(year=1, month=1, day=1)
+    end_date = datetime.date(year=9999, month=12, day=31)
+    dt = fake.date_time_between_dates(datetime_start=start_date, datetime_end=end_date)
+    return dt.strftime('%Y%m%d%H%M%S')
 
 
 def line_generator():
     while True:
         tld = random.sample(tld_set, 1)[0]
         host = id_generator(random.randrange(25))
-        date14 = id_generator(14, string.digits)
+        date14 = date_generator()
         ipfsCharRange = string.ascii_letters + string.digits
 
         locators = "urn:ipfs/{}/{}".format(
