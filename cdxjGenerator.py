@@ -16,6 +16,7 @@ from faker import Faker
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+
 def date_generator():
     fake = Faker()
     start_date = datetime.date(year=1, month=1, day=1)
