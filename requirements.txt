@@ -1,2 +1,3 @@
-tlds
 Faker
+surt>=0.3.0
+tlds

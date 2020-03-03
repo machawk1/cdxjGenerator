@@ -8,6 +8,7 @@
 from tlds import tld_set
 import string
 import random
+import surt
 import sys
 import datetime
 from faker import Faker
@@ -25,10 +26,19 @@ def date_generator():
     return dt.strftime('%Y%m%d%H%M%S')
 
 
-def line_generator():
+def line_generator(providedURIR=None):
     while True:
-        tld = random.sample(tld_set, 1)[0]
-        host = id_generator(random.randrange(25))
+        urir = providedURIR
+        surtedURIR = None
+        if providedURIR is None:
+            tld = random.sample(tld_set, 1)[0]
+            host = id_generator(random.randrange(25))
+            urir = f"{host}.{tld}"
+            surtedURIR = f"{tld},{host}/"
+        else:
+            surtedURIR = surt.surt(providedURIR,
+                                   path_strip_trailing_slash_unless_empty=True)
+
         date14 = date_generator()
         ipfsCharRange = string.ascii_letters + string.digits
 
@@ -37,20 +47,25 @@ def line_generator():
             id_generator(46, ipfsCharRange))
 
         lineTemplate = string.Template(
-            "$tld,$host/ $date14 {\"locator\": \"$locators\", \"original_uri\": \"http://$host.$tld\", \"mime_type\": \"text/html\", \"status_code\": \"200\"}")
-        line = lineTemplate.substitute(tld=tld, host=host, date14=date14, locators=locators)
+            "$surtedURIR $date14 {\"locator\": \"$locators\", \"original_uri\": \"http://$urir\", \"mime_type\": \"text/html\", \"status_code\": \"200\"}")
+        line = lineTemplate.substitute(surtedURIR=surtedURIR, urir=urir, date14=date14, locators=locators)
         yield line
 
 
 headerLine = '!context ["http://tools.ietf.org/html/rfc7089"]'
 print(headerLine)
 
+
 if len(sys.argv) <= 1:
     lineCount = 10
 else:
     lineCount = int(sys.argv[1])
 
-lineGenerator = line_generator()
+providedURIR = None
+if len(sys.argv) == 3:
+    providedURIR = sys.argv[2]
+
+lineGenerator = line_generator(providedURIR)
 while lineCount > 0:
     print(next(lineGenerator))
     lineCount -= 1
