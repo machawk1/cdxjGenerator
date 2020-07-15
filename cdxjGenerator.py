@@ -44,7 +44,7 @@ def line_generator(provided_urir=None):
         cdxj_line = (f"{surted_urir} {date14} "
                      "{"
                      f'"locator": "{locators}", '
-                     f'"original_uri": {urir}, '
+                     f'"original_uri": "{urir}", '
                      '"mime_type": "text/html", "status_code": "200"}'
                      )
 
