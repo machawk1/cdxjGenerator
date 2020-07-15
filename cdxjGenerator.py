@@ -17,15 +17,6 @@ def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def date_generator():
-    fake = Faker()
-    start_date = datetime.date(year=1, month=1, day=1)
-    end_date = datetime.date(year=9999, month=12, day=31)
-    dt = fake.date_time_between_dates(
-        datetime_start=start_date, datetime_end=end_date)
-    return dt.strftime('%Y%m%d%H%M%S')
-
-
 def line_generator(provided_urir=None):
     fake = Faker()
     while True:
@@ -35,7 +26,7 @@ def line_generator(provided_urir=None):
             urir,
             path_strip_trailing_slash_unless_empty=True)
 
-        date14 = date_generator()
+        date14 = fake.date_time().strftime('%Y%m%d%H%M%S')
         ipfs_char_range = string.ascii_letters + string.digits
 
         locators = (f"urn:ipfs/{id_generator(46, ipfs_char_range)}/"
