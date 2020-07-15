@@ -37,8 +37,9 @@ def line_generator(provided_urir=None):
             urir = f"{host}.{tld}"
             surted_urir = f"{tld},{host}/"
         else:
-            surted_urir = surt.surt(provided_urir,
-                                   path_strip_trailing_slash_unless_empty=True)
+            surted_urir = surt.surt(
+                provided_urir,
+                path_strip_trailing_slash_unless_empty=True)
 
         date14 = date_generator()
         ipfs_char_range = string.ascii_letters + string.digits
@@ -85,4 +86,4 @@ us,memento)/ 20140115101500 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ5
 us,memento)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmVGSLKM2oQQZfoUnuBYqNzi4Cy2FiAgdG6pdpBpuBKS1N", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
 us,memento)/ 20161231110001 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmaJ6aBdMrZPiJHPqWbzqVuxiWBScv37JvAhiHAbCzgsF1", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
 us,someotheruri)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmdxGXvLVFiUy7gLwww5TUTgkWdrAEaNmhgEc4bcUpGBke", "original_uri": "http://someotherURI.us/", "mime_type": "text/html", "status_code": "200"}
-'''
+'''  # noqa: D301
