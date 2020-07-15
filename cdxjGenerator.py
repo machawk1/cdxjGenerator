@@ -35,11 +35,11 @@ def line_generator(provided_urir=None):
             tld = random.sample(tld_set, 1)[0]
             host = id_generator(random.randrange(25))
             urir = f"{host}.{tld}"
-            surted_urir = f"{tld},{host}/"
-        else:
-            surted_urir = surt.surt(
-                provided_urir,
-                path_strip_trailing_slash_unless_empty=True)
+            provided_urir = urir
+
+        surted_urir = surt.surt(
+            provided_urir,
+            path_strip_trailing_slash_unless_empty=True)
 
         date14 = date_generator()
         ipfs_char_range = string.ascii_letters + string.digits
