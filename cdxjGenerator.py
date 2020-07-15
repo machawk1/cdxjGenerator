@@ -30,15 +30,15 @@ def date_generator():
 def line_generator(provided_urir=None):
     while True:
         urir = provided_urir
-        surted_urir = None
+        unsurted_urir = provided_urir
         if provided_urir is None:
             tld = random.sample(tld_set, 1)[0]
             host = id_generator(random.randrange(25))
             urir = f"{host}.{tld}"
-            provided_urir = urir
+            unsurted_urir = urir
 
         surted_urir = surt.surt(
-            provided_urir,
+            unsurted_urir,
             path_strip_trailing_slash_unless_empty=True)
 
         date14 = date_generator()
