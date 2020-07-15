@@ -29,11 +29,10 @@ def date_generator():
 def line_generator(provided_urir=None):
     fake = Faker()
     while True:
-        urir = provided_urir
-        unsurted_urir = provided_urir or fake.uri()
+        urir = provided_urir or fake.uri()
 
         surted_urir = surt.surt(
-            unsurted_urir,
+            urir,
             path_strip_trailing_slash_unless_empty=True)
 
         date14 = date_generator()
@@ -45,7 +44,7 @@ def line_generator(provided_urir=None):
         cdxj_line = (f"{surted_urir} {date14} "
                      "{"
                      f'"locator": "{locators}", '
-                     f'"original_uri": "http://{urir}", '
+                     f'"original_uri": {urir}, '
                      '"mime_type": "text/html", "status_code": "200"}'
                      )
 
