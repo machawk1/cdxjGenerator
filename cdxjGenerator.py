@@ -30,9 +30,7 @@ def line_generator(provided_urir=None):
     fake = Faker()
     while True:
         urir = provided_urir
-        unsurted_urir = provided_urir
-        if provided_urir is None:
-            unsurted_urir = urir = fake.uri()
+        unsurted_urir = provided_urir or fake.uri()
 
         surted_urir = surt.surt(
             unsurted_urir,
