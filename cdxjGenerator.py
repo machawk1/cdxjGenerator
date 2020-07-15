@@ -5,13 +5,13 @@
 #
 # Run it with $ python3 cdxjGenerator.py [numberOfLines]
 
-from tlds import tld_set
-import string
-import random
-import surt
-import sys
 import datetime
 from faker import Faker
+import random
+import string
+import surt
+import sys
+from tlds import tld_set
 
 
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
@@ -22,53 +22,58 @@ def date_generator():
     fake = Faker()
     start_date = datetime.date(year=1, month=1, day=1)
     end_date = datetime.date(year=9999, month=12, day=31)
-    dt = fake.date_time_between_dates(datetime_start=start_date, datetime_end=end_date)
+    dt = fake.date_time_between_dates(
+        datetime_start=start_date, datetime_end=end_date)
     return dt.strftime('%Y%m%d%H%M%S')
 
 
-def line_generator(providedURIR=None):
+def line_generator(provided_urir=None):
     while True:
-        urir = providedURIR
-        surtedURIR = None
-        if providedURIR is None:
+        urir = provided_urir
+        surted_urir = None
+        if provided_urir is None:
             tld = random.sample(tld_set, 1)[0]
             host = id_generator(random.randrange(25))
             urir = f"{host}.{tld}"
-            surtedURIR = f"{tld},{host}/"
+            surted_urir = f"{tld},{host}/"
         else:
-            surtedURIR = surt.surt(providedURIR,
-                                   path_strip_trailing_slash_unless_empty=True)
+            surted_urir = surt.surt(
+                provided_urir,
+                path_strip_trailing_slash_unless_empty=True)
 
         date14 = date_generator()
-        ipfsCharRange = string.ascii_letters + string.digits
+        ipfs_char_range = string.ascii_letters + string.digits
 
-        locators = "urn:ipfs/{}/{}".format(
-            id_generator(46, ipfsCharRange),
-            id_generator(46, ipfsCharRange))
+        locators = (f"urn:ipfs/{id_generator(46, ipfs_char_range)}/"
+                    f"{id_generator(46, ipfs_char_range)}")
 
-        lineTemplate = string.Template(
-            "$surtedURIR $date14 {\"locator\": \"$locators\", \"original_uri\": \"http://$urir\", \"mime_type\": \"text/html\", \"status_code\": \"200\"}")
-        line = lineTemplate.substitute(surtedURIR=surtedURIR, urir=urir, date14=date14, locators=locators)
-        yield line
+        cdxj_line = (f"{surted_urir} {date14} "
+                     "{"
+                     f'"locator": "{locators}", '
+                     f'"original_uri": "http://{urir}", '
+                     '"mime_type": "text/html", "status_code": "200"}'
+                     )
+
+        yield cdxj_line
 
 
-headerLine = '!context ["http://tools.ietf.org/html/rfc7089"]'
-print(headerLine)
+header_line = '!context ["http://tools.ietf.org/html/rfc7089"]'
+print(header_line)
 
 
 if len(sys.argv) <= 1:
-    lineCount = 10
+    line_count = 10
 else:
-    lineCount = int(sys.argv[1])
+    line_count = int(sys.argv[1])
 
-providedURIR = None
+provided_urir = None
 if len(sys.argv) == 3:
-    providedURIR = sys.argv[2]
+    provided_urir = sys.argv[2]
 
-lineGenerator = line_generator(providedURIR)
-while lineCount > 0:
-    print(next(lineGenerator))
-    lineCount -= 1
+line_generator = line_generator(provided_urir)
+while line_count > 0:
+    print(next(line_generator))
+    line_count -= 1
 
 '''Sample CDXJ TimeMap pulled and generated from github.com/oduwsdl/ipwb
 
@@ -81,4 +86,4 @@ us,memento)/ 20140115101500 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ5
 us,memento)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmVGSLKM2oQQZfoUnuBYqNzi4Cy2FiAgdG6pdpBpuBKS1N", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
 us,memento)/ 20161231110001 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmaJ6aBdMrZPiJHPqWbzqVuxiWBScv37JvAhiHAbCzgsF1", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
 us,someotheruri)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmdxGXvLVFiUy7gLwww5TUTgkWdrAEaNmhgEc4bcUpGBke", "original_uri": "http://someotherURI.us/", "mime_type": "text/html", "status_code": "200"}
-'''
+'''  # noqa: D301
