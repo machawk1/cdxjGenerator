@@ -11,7 +11,6 @@ import random
 import string
 import surt
 import sys
-from tlds import tld_set
 
 
 def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
@@ -28,14 +27,12 @@ def date_generator():
 
 
 def line_generator(provided_urir=None):
+    fake = Faker()
     while True:
         urir = provided_urir
         unsurted_urir = provided_urir
         if provided_urir is None:
-            tld = random.sample(tld_set, 1)[0]
-            host = id_generator(random.randrange(25))
-            urir = f"{host}.{tld}"
-            unsurted_urir = urir
+            unsurted_urir = urir = fake.uri()
 
         surted_urir = surt.surt(
             unsurted_urir,
