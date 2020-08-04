@@ -1,0 +1,43 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.metadata]
+module = "cdxjGenerator"
+author       = "Mat Kelly"
+author-email = "me@matkelly.com"
+home-page    = "https://github.com/machawk1/cdxjGenerator"
+keywords     = "web archives replay cdxj memento"
+license      = "MIT License"
+description-file = "README.md"
+
+requires-python = ">=3.7"
+requires = [
+  'Faker',
+  'surt>=0.3.0',
+  'tlds'
+]
+
+[scripts]
+cdxjGenerator = "cdxjGenerator.cdxjGenerator:main"
+
+classifiers = [
+  'Development Status :: 3 - Alpha',
+
+  'Environment :: Web Environment',
+
+  'Programming Language :: Python :: 3.7',
+  'Programming Language :: Python :: 3.8',
+
+  'License :: OSI Approved :: MIT License',
+
+  'Intended Audience :: Developers',
+  'Intended Audience :: Information Technology',
+  'Intended Audience :: Science/Research',
+
+  'Topic :: Internet :: WWW/HTTP',
+  'Topic :: System :: Archiving',
+  'Topic :: System :: Archiving :: Backup',
+  'Topic :: System :: Archiving :: Mirroring',
+  'Topic :: Utilities'
+]
