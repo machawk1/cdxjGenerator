@@ -8,7 +8,7 @@ This tool is published to pypi. To install it:
 
 `pip install cdxjGenerator`
 
-To use the development version, clone this repository then `pip install .`.
+To use the development version, clone this repository then `pip install .`
 
 
 ## Usage
