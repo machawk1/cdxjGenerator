@@ -1,9 +1,12 @@
-# cdxj TimeMap generator
-#
-# This is script to generate dummy CDXJ data for testing other tools.
-# A sample of the expected output style is appended to this code.
-#
-# Run it with $ python3 cdxjGenerator.py [numberOfLines]
+"""
+cdxj TimeMap generator
+
+This is script to generate dummy CDXJ data for testing other tools.
+A sample of the expected output style is appended to this code.
+
+Run it with $ python3 cdxjGenerator.py [numberOfLines]
+"""
+__version__ = '0.0.1'
 
 import datetime
 from faker import Faker
@@ -17,7 +20,7 @@ def id_generator(size=6, chars=string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
 
-def line_generator(provided_urir=None):
+def generate_line(provided_urir=None):
     fake = Faker()
     start_date = datetime.date(year=1, month=1, day=1)
     end_date = datetime.date(year=9999, month=12, day=31)
@@ -29,8 +32,8 @@ def line_generator(provided_urir=None):
             urir,
             path_strip_trailing_slash_unless_empty=True)
 
-        date14 = fake.date_time_between_dates(start_date,
-                end_date).strftime('%Y%m%d%H%M%S')
+        date14 = fake.date_time_between_dates(
+            start_date, end_date).strftime('%Y%m%d%H%M%S')
 
         locators = (f"urn:ipfs/{id_generator(46, ipfs_char_range)}/"
                     f"{id_generator(46, ipfs_char_range)}")
@@ -45,33 +48,25 @@ def line_generator(provided_urir=None):
         yield cdxj_line
 
 
-header_line = '!context ["http://tools.ietf.org/html/rfc7089"]'
-print(header_line)
+def main():
+    header_line = '!context ["http://tools.ietf.org/html/rfc7089"]'
+    print(header_line)
+
+    if len(sys.argv) <= 1:
+        line_count = 10
+    else:
+        line_count = int(sys.argv[1])
+
+    provided_urir = None
+    if len(sys.argv) == 3:
+        provided_urir = sys.argv[2]
+
+    line_generator = generate_line(provided_urir)
+    while line_count > 0:
+        print(next(line_generator))
+        line_count -= 1
 
 
-if len(sys.argv) <= 1:
-    line_count = 10
-else:
-    line_count = int(sys.argv[1])
+if __name__ == "__main__":
+    main()
 
-provided_urir = None
-if len(sys.argv) == 3:
-    provided_urir = sys.argv[2]
-
-line_generator = line_generator(provided_urir)
-while line_count > 0:
-    print(next(line_generator))
-    line_count -= 1
-
-'''Sample CDXJ TimeMap pulled and generated from github.com/oduwsdl/ipwb
-
-!context ["http://tools.ietf.org/html/rfc7089"]
-!meta {"created_at": "2019-02-06T19:01:10.273792", "generator": "InterPlanetary Wayback v.0.2018.10.15.1346"}
-us,anothersite)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmdGwKcB1JVttQ419yjqFN1WdQbJ9V2PSdfLKGXMdoUivg", "original_uri": "http://anothersite.us/", "mime_type": "text/html", "status_code": "200"}
-us,memento)/ 20130202100000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/Qmf7YmS73j36H33w2zYujUn3atQBK1VLiL51cwCrvVKkBC", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
-us,memento)/ 20140114100000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmZtSHMxX9roQPHLvRyPkrR7azqfj5cmpYa5sFQkZfkLXf", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
-us,memento)/ 20140115101500 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmXDsUhfSzvtTwakyt6McXnjpzAw2BQvAcVdSCWSp2Tfge", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
-us,memento)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmVGSLKM2oQQZfoUnuBYqNzi4Cy2FiAgdG6pdpBpuBKS1N", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
-us,memento)/ 20161231110001 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmaJ6aBdMrZPiJHPqWbzqVuxiWBScv37JvAhiHAbCzgsF1", "original_uri": "http://memento.us/", "mime_type": "text/html", "status_code": "200"}
-us,someotheruri)/ 20161231110000 {"locator": "urn:ipfs/QmNQX5gEjbEPModBHXb6w4EWveLkZ57uEC9Kzh8bho7QmL/QmdxGXvLVFiUy7gLwww5TUTgkWdrAEaNmhgEc4bcUpGBke", "original_uri": "http://someotherURI.us/", "mime_type": "text/html", "status_code": "200"}
-'''  # noqa: D301
