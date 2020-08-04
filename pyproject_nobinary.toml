@@ -18,6 +18,9 @@ requires = [
   'tlds'
 ]
 
+[scripts]
+cdxjGenerator = "cdxjGenerator.cdxjGenerator:main"
+
 classifiers = [
   'Development Status :: 3 - Alpha',
 
