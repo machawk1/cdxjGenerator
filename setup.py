@@ -5,10 +5,10 @@ from cdxjGenerator import __version__
 
 with open('README.md') as f:
     long_description = f.read()
-desc = """cdxjGenerator"""
+desc = """Generate CDXJ TimeMaps for testing elsewhere"""
 
 setup(
-    name='cdxGenerator',
+    name='cdxjGenerator',
     version=__version__,
     url='https://github.com/machawk1/cdxjGenerator',
     download_url="https://github.com/cdxjGenerator",
